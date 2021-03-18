@@ -1,0 +1,37 @@
+#tools application name which you want to pull, data format: Lists
+#tools_applications: 
+#  - adminmongo
+#  - adminer
+#  - codiad
+#  - cmak
+#  - codeserver
+#  - mongoexpress
+#  - onlyofficedocumentserver
+#  - phpmyadmin
+#  - phppgadmin
+#  - pgadmin
+#  - portainer
+#  - rocketmqconsole
+
+# This is must define a list variable
+tools_applications: []
+
+# db tools 909*
+tools_apps_adminer_port: 9092
+tools_apps_adminmongo_port: 9091
+tools_apps_mongoexpress_port: 9091
+tools_apps_phpmyadmin_port: 9090
+tools_apps_phppgadmin_port: 9090
+tools_apps_pgadmin_port: 9090
+
+# develop tools 901*
+tools_apps_codiad_port: 9010
+tools_apps_codeserver_port: 9011
+
+# other tools 900*
+tools_apps_portainer_port: 9000
+tools_apps_onlyofficedocumentserver_port: 9002
+tools_apps_rocketmqconsole_port: 9004
+tools_apps_cmak_port: 9005
+
+tools_apps_dir: "/data/apps"

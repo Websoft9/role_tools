@@ -1,4 +1,19 @@
 - name: Install this role on {{ansible_os_family}}
   include: "{{ansible_os_family}}.yml"
 
+- name: Install Docker applications
+  include: apps.yml docker_appname="{{docker_applications_item}}"
+  loop: "{{docker_applications}}"
+  loop_control:
+    loop_var: docker_applications_item
+  when: docker_applications is defined and docker_applications is not none and docker_applications != ""
+  
+- name: copy script files to remote
+  copy: src=check_dockerapp_service.sh dest=/tmp/check_dockerapp_service.sh
+
+- name: Check dockerapp service
+  shell: bash /tmp/check_dockerapp_service.sh
+  register: check_dockerapp_service
+  notify: check_dockerapp_service
+
 

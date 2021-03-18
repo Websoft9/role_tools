@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: "{{docker_appname}}"
+      environment:
+       - PMA_HOST={{docker_gateway.stdout}}
+       - PMA_PORT=3306
+       - UPLOAD_LIMIT=20M
+      restart: always
+      ports:
+       - {{docker_apps_phpmyadmin_port}}:80
+      volumes:
+       - "{{docker_apps_dir}}/{{docker_appname}}/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php"
+
+networks:
+  default:
+    external:
+      name: "{{docker_addnetwork}}"

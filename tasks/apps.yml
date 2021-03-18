@@ -1,0 +1,70 @@
+# This framework is for you install docker application
+# 1 create directory
+# 2 copy docker-compose.yml file
+# 3 docker-compose up -d
+# 4 create symbolic link
+# You just need to add a docker compose file to the templates folder of this role when you want to develop more application.
+
+
+- debug:
+    msg: "{{docker_appname}} will be installed"
+
+- name: Create docker directory
+  file:
+    path: "{{tools_apps_dir}}/{{docker_appname}}"
+    state: directory
+    owner: docker
+    group: docker
+    recurse: true
+
+- name: Get Docker UID to fix file permission issue
+  shell: sudo id docker -u
+  register: docker_uid_json
+    
+- name: Convert variable
+  set_fact:
+    docker_uid: "{{docker_uid_json.stdout}}"
+    
+- debug:
+    var: docker_uid
+    
+- name: copy docker-compose.yml
+  template:
+    src: apps-{{docker_appname}}-compose.yml
+    dest: "{{tools_apps_dir}}/{{docker_appname}}/docker-compose.yml"
+ 
+- name: Run docker-compose and add exra user permission
+  shell: |
+    docker-compose up -d
+    sleep 30s
+    setfacl -m u:docker:rwx -R {{tools_apps_dir}}/{{docker_appname}}
+  args:
+    chdir: "{{tools_apps_dir}}/{{docker_appname}}"
+    
+- name: Create a symbolic link
+  file:
+    src: '{{item.src}}'
+    dest: '{{item.dest}}'
+    state: link
+  with_items:
+    - {src: "{{tools_apps_dir}}/{{docker_appname}}/docker-compose.yml",dest: "/data/config/apps-{{docker_appname}}-compose.yml"}
+    - {src: "{{tools_apps_dir}}/{{docker_appname}}",dest: "/data/wwwroot/{{docker_appname}}"}
+    
+- block:
+  - set_fact:
+      docker_version_cmd: "{{tools_apps_commands[docker_appname].check_version}}"
+      docker_extra_cmd:   "{{tools_apps_commands[docker_appname].extra}}"
+  - debug: var=docker_version_cmd
+  - debug: var=docker_extra_cmd
+
+  - name: Chcek {{docker_appname}} version
+    shell: sudo echo "{{docker_appname}} version:" $(eval "{{docker_version_cmd}}")  |sudo tee -a /data/logs/install_version.txt
+    when: docker_version_cmd is defined and docker_version_cmd.stdout is not none
+    failed_when: false
+
+  - name: Execute container extra command
+    shell: |
+      sleep 30s
+      eval "{{docker_extra_cmd}}"
+    when: docker_extra_cmd is defined and docker_extra_cmd is not none
+
