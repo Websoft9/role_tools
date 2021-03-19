@@ -2,11 +2,11 @@
   include: "{{ansible_os_family}}.yml"
 
 - name: Install Docker applications
-  include: apps.yml docker_appname="{{docker_applications_item}}"
-  loop: "{{docker_applications}}"
+  include: apps.yml docker_appname="{{tools_applications_item}}"
+  loop: "{{tools_applications}}"
   loop_control:
-    loop_var: docker_applications_item
-  when: docker_applications is defined and docker_applications is not none and docker_applications != ""
+    loop_var: tools_applications_item
+  when: tools_applications is defined and tools_applications is not none and tools_applications != ""
   
 - name: copy script files to remote
   copy: src=check_dockerapp_service.sh dest=/tmp/check_dockerapp_service.sh
