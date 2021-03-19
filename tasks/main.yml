@@ -2,7 +2,7 @@
   include: "{{ansible_os_family}}.yml"
 
 - name: Install Docker applications
-  include: apps.yml docker_appname="{{tools_applications_item}}"
+  include: apps.yml tools_appname="{{tools_applications_item}}"
   loop: "{{tools_applications}}"
   loop_control:
     loop_var: tools_applications_item
