@@ -9,11 +9,11 @@
   when: tools_applications is defined and tools_applications is not none and tools_applications != ""
   
 - name: copy script files to remote
-  copy: src=check_dockerapp_service.sh dest=/tmp/check_dockerapp_service.sh
+  copy: src=check_app_service.sh dest=/tmp/check_app_service.sh
 
 - name: Check dockerapp service
-  shell: bash /tmp/check_dockerapp_service.sh
-  register: check_dockerapp_service
-  notify: check_dockerapp_service
+  shell: bash /tmp/check_app_service.sh
+  register: check_app_service
+  notify: check_app_service
 
 

@@ -7,11 +7,11 @@
 
 
 - debug:
-    msg: "{{docker_appname}} will be installed"
+    msg: "{{tools_appname}} will be installed"
 
 - name: Create docker directory
   file:
-    path: "{{tools_apps_dir}}/{{docker_appname}}"
+    path: "{{tools_apps_dir}}/{{tools_appname}}"
     state: directory
     owner: docker
     group: docker
@@ -30,16 +30,16 @@
     
 - name: copy docker-compose.yml
   template:
-    src: apps-{{docker_appname}}-compose.yml
-    dest: "{{tools_apps_dir}}/{{docker_appname}}/docker-compose.yml"
+    src: apps-{{tools_appname}}-compose.yml
+    dest: "{{tools_apps_dir}}/{{tools_appname}}/docker-compose.yml"
  
 - name: Run docker-compose and add exra user permission
   shell: |
     docker-compose up -d
     sleep 30s
-    setfacl -m u:docker:rwx -R {{tools_apps_dir}}/{{docker_appname}}
+    setfacl -m u:docker:rwx -R {{tools_apps_dir}}/{{tools_appname}}
   args:
-    chdir: "{{tools_apps_dir}}/{{docker_appname}}"
+    chdir: "{{tools_apps_dir}}/{{tools_appname}}"
     
 - name: Create a symbolic link
   file:
@@ -47,18 +47,18 @@
     dest: '{{item.dest}}'
     state: link
   with_items:
-    - {src: "{{tools_apps_dir}}/{{docker_appname}}/docker-compose.yml",dest: "/data/config/apps-{{docker_appname}}-compose.yml"}
-    - {src: "{{tools_apps_dir}}/{{docker_appname}}",dest: "/data/wwwroot/{{docker_appname}}"}
+    - {src: "{{tools_apps_dir}}/{{tools_appname}}/docker-compose.yml",dest: "/data/config/apps-{{tools_appname}}-compose.yml"}
+    - {src: "{{tools_apps_dir}}/{{tools_appname}}",dest: "/data/wwwroot/{{tools_appname}}"}
     
 - block:
   - set_fact:
-      docker_version_cmd: "{{tools_apps_commands[docker_appname].check_version}}"
-      docker_extra_cmd:   "{{tools_apps_commands[docker_appname].extra}}"
+      docker_version_cmd: "{{tools_apps_commands[tools_appname].check_version}}"
+      docker_extra_cmd:   "{{tools_apps_commands[tools_appname].extra}}"
   - debug: var=docker_version_cmd
   - debug: var=docker_extra_cmd
 
-  - name: Chcek {{docker_appname}} version
-    shell: sudo echo "{{docker_appname}} version:" $(eval "{{docker_version_cmd}}")  |sudo tee -a /data/logs/install_version.txt
+  - name: Chcek {{tools_appname}} version
+    shell: sudo echo "{{tools_appname}} version:" $(eval "{{docker_version_cmd}}")  |sudo tee -a /data/logs/install_version.txt
     when: docker_version_cmd is defined and docker_version_cmd.stdout is not none
     failed_when: false
 
