@@ -3,9 +3,9 @@ services:
   phppgadmin:
     restart: always
     image: dpage/pgadmin4
-    container_name: "{{docker_appname}}"
+    container_name: "{{tools_appname}}"
     ports:
-      - "{{docker_apps_pgadmin_port}}:80"
+      - "{{tools_apps_pgadmin_port}}:80"
     environment:
       - PGADMIN_DEFAULT_EMAIL=user@domain.com
       - PGADMIN_DEFAULT_PASSWORD=SuperSecret
@@ -14,4 +14,4 @@ services:
 networks:
   default:
     external:
-      name: "{{docker_addnetwork}}"
+      name: "{{tools_addnetwork}}"

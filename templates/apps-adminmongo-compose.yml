@@ -2,18 +2,18 @@ version: "2.2"
 services:
   phpmyadmin:
       image: mrvautin/adminmongo
-      container_name: "{{docker_appname}}"
+      container_name: "{{tools_appname}}"
       environment:
        - PORT=1234
        - local=en
        - HOST=0.0.0.0
       restart: always
       ports:
-       - {{docker_apps_adminmongo_port}}:1234
+       - {{tools_apps_adminmongo_port}}:1234
       volumes:
-       - "{{docker_apps_dir}}/{{docker_appname}}/config:/config"
+       - "{{tools_apps_dir}}/{{tools_appname}}/config:/config"
 
 networks:
   default:
     external:
-      name: "{{docker_addnetwork}}"
+      name: "{{tools_addnetwork}}"

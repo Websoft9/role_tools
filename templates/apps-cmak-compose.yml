@@ -6,12 +6,12 @@ version: '3.6'
 services:
   kafka_manager:
     image: hlebalbau/kafka-manager:stable
-    container_name: "{{docker_appname}}"
+    container_name: "{{tools_appname}}"
     restart: always
     ports:
-      - "{{docker_apps_cmak_port}}:9000"
+      - "{{tools_apps_cmak_port}}:9000"
     environment:
-      ZK_HOSTS: "{{docker_gateway.stdout}}:2181"
+      ZK_HOSTS: "{{tools_docker_gateway.stdout}}:2181"
       APPLICATION_SECRET: "random-secret"
       KAFKA_MANAGER_AUTH_ENABLED: "true"
       KAFKA_MANAGER_USERNAME: admin
@@ -22,4 +22,4 @@ services:
 networks:
   default:
     external:
-      name: "{{docker_addnetwork}}"
+      name: "{{tools_addnetwork}}"

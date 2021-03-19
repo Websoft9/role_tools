@@ -6,7 +6,7 @@ version: "2.1"
 services:
   codeserver:
       image: linuxserver/code-server
-      container_name: "{{docker_appname}}"
+      container_name: "{{tools_appname}}"
       environment:
         - PUID={{docker_uid}}
         - PGID={{docker_uid}}
@@ -18,10 +18,10 @@ services:
       tty: true
       network_mode: host
       ports:
-        - {{docker_apps_codeserver_port}}:8443
+        - {{tools_apps_codeserver_port}}:8443
       volumes:
-        - "{{docker_apps_dir}}/{{docker_appname}}/config:/config"
+        - "{{tools_apps_dir}}/{{tools_appname}}/config:/config"
 networks:
   default:
     external:
-      name: "{{docker_addnetwork}}"
+      name: "{{tools_addnetwork}}"

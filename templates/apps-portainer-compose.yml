@@ -5,15 +5,15 @@ version: '2.0'
 services:
   portainer:
     image: portainer/portainer-ce:latest
-    container_name: "{{docker_appname}}"
+    container_name: "{{tools_appname}}"
     restart: always
     ports:
-      - {{docker_apps_portainer_port}}:9000
+      - {{tools_apps_portainer_port}}:9000
     volumes:
-      - "{{docker_apps_dir}}/{{docker_appname}}/portainer_data:/data"
+      - "{{tools_apps_dir}}/{{docker_appname}}/portainer_data:/data"
       - /var/run/docker.sock:/var/run/docker.sock
       
 networks:
   default:
     external:
-      name: "{{docker_addnetwork}}"
+      name: "{{tools_addnetwork}}"
